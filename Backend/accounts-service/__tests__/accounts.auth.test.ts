@@ -1,3 +1,4 @@
+import {jest, describe, expect, it, beforeAll, afterAll} from '@jest/globals';
 import request from 'supertest';
 import app from '../src/app';
 import {IAccount} from '../src/models/account';
