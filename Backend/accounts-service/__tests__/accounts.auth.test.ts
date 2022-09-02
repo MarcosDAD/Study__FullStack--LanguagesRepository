@@ -5,7 +5,6 @@ import {IAccount} from '../src/models/account';
 import repository from '../src/models/accountRepository';
 import auth from '../src/auth';
 
-
 const plainPass = "abc1234";
 const hashPass = auth.hashPass(plainPass);
 const testAccount : IAccount = {
@@ -15,9 +14,11 @@ const testAccount : IAccount = {
     native_language: "jestguese",
     status: 100
 }
+let jwt : string = '';
 
 beforeAll(async () => {
-    await repository.newAccount(testAccount);
+    const result = await repository.newAccount(testAccount);
+    jwt = auth.sign(result.id!);
 })
 
 afterAll(async () => {
@@ -35,7 +36,7 @@ describe('Testando rotas de autenticação', () =>{
         const resultado = await request(app)
             .post('/accounts/login')
             .send(payload)
-        
+
         expect(resultado.status).toEqual(200)
         expect(resultado.body.auth).toBeTruthy();
         expect(resultado.body.token).toBeTruthy();
@@ -56,7 +57,7 @@ describe('Testando rotas de autenticação', () =>{
     it('POST /accounts/login - 401 Unauthorized', async () =>{
         const payload = {
             email: testAccount.email,
-            password: plainPass+'1'
+            password: plainPass+'123'
         }
 
         const resultado = await request(app)
@@ -64,5 +65,13 @@ describe('Testando rotas de autenticação', () =>{
             .send(payload)
 
         expect(resultado.status).toEqual(401)
+    })
+
+    it('POST /accounts/logout - 200 Ok', async () =>{
+        const resultado = await request(app)
+            .post('/accounts/logout')
+            .set('x-access-token', jwt);
+
+        expect(resultado.status).toEqual(200)
     })
 })

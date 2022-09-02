@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import fs from 'fs';
 import authCommons, {Token} from 'lo-commons/api/auth'
+import path, { dirname } from 'path';
 
-const privateKey = fs.readFileSync('./keys/private.key', 'utf-8');
-
+const privateKey = fs.readFileSync(path.resolve(__dirname, '../keys/private.key'), 'utf-8');
 const jwtExpires = parseInt(`${process.env.JWT_EXPIRES}`);
 const jwtAlgorithm = 'RS256';
 
