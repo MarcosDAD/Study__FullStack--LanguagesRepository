@@ -2,6 +2,8 @@ import {Request, Response} from 'express';
 import {IAccount} from '../models/account';
 import repository from '../models/accountRepository';
 import auth from '../auth';
+import controllerCommons from 'lo-commons/api/controllers/controller';
+import {Token} from 'lo-commons/api/auth';
 
 async function getAccounts (req: Request, res: Response, next: any){
     const accounts : IAccount[] = await repository.findAll();
@@ -13,10 +15,13 @@ async function getAccounts (req: Request, res: Response, next: any){
 
 async function getAccount (req: Request, res: Response, next: any){
     try{
-        const id = parseInt(req.params.id);
-        if(!id) throw new Error ("ID is invalid format")
+        const accountId = parseInt(req.params.id);
+        if(!accountId) throw new Error ("ID is invalid format")
 
-        const account = await repository.findById(id);
+        const token = controllerCommons.getToken(res) as Token;
+        if (accountId !== token.accountId) return res.status(403).end();
+
+        const account = await repository.findById(accountId);
         if (account === null)
             return res.status(404).end();
         else{
@@ -49,6 +54,9 @@ async function setAccount (req: Request, res: Response, next: any){
     try{
         const accountId = parseInt(req.params.id);
         if(!accountId) throw new Error ("ID is invalid format")
+
+        const token = controllerCommons.getToken(res) as Token;
+        if (accountId !== token.accountId) return res.status(403).end();
 
         const accountParams = req.body as IAccount;
         
@@ -95,4 +103,21 @@ async function logoutAccount (req: Request, res: Response, next: any){
     res.json({auth: false, token: null});
 }
 
-export default {getAccounts, getAccount, addAccounts, setAccount, loginAccount, logoutAccount}
+async function removeAccount (req: Request, res: Response, next: any){
+    try{
+        const accountId = parseInt(req.params.id);
+        if (!accountId) return res.status(400).end();
+
+        const token = controllerCommons.getToken(res) as Token;
+        if (accountId !== token.accountId) return res.status(403).end();
+
+        await repository.removeAccount(accountId);
+        res.status(200).end()
+    }
+    catch(error){
+        console.log(`removeAccount: ` + error);
+        res.status(400).end()
+    }
+}
+
+export default {getAccounts, getAccount, addAccounts, setAccount, loginAccount, logoutAccount, removeAccount}

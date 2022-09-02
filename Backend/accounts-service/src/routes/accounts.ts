@@ -1,19 +1,21 @@
 import {Router, Request, Response} from 'express';
 import accountsController from '../controllers/accounts'
 const router = Router();
-import {validateUpdateAccount, validateAccount, validateLogin, validateAuth} from './middlewares';
+import {validateUpdateAccount, validateAutorization, validateAccount, validateLogin, validateAuthentication} from './middlewares';
 import Joi from "joi";
 
-router.get('/accounts/', validateAuth,accountsController.getAccounts);
+router.get('/accounts/', validateAuthentication,accountsController.getAccounts);
 
-router.get('/accounts/:id', validateAuth, accountsController.getAccount);
+router.get('/accounts/:id', validateAuthentication, validateAutorization, accountsController.getAccount);
 
-router.patch('/accounts/:id', validateAuth, validateUpdateAccount, accountsController.setAccount);
+router.patch('/accounts/:id', validateAuthentication, validateAutorization, validateUpdateAccount, accountsController.setAccount);
 
 router.post('/accounts/', validateAccount, accountsController.addAccounts);
 
 router.post('/accounts/login', validateLogin, accountsController.loginAccount);
 
-router.post('/accounts/logout', validateAuth, validateLogin, accountsController.logoutAccount);
+router.post('/accounts/logout', validateAuthentication, accountsController.logoutAccount);
+
+router.delete('/accounts/:id', validateAuthentication, validateAutorization, accountsController.removeAccount);
 
 export default router
