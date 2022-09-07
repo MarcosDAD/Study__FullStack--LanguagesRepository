@@ -16,7 +16,6 @@ function validateSchema (schema: Joi.ObjectSchema<any>, req: Request, res: Respo
 async function validateAuth (req: Request, res: Response, next: any){
     try{
         const token = req.headers['x-access-token'] as string;
-        console.log(token);
         if (!token){
             console.log("Invalid token");
             return res.status(401).end();
