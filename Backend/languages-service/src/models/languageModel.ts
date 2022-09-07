@@ -30,4 +30,9 @@ export default database.define<ILanguageModel>('language', {
         allowNull: false,
         defaultValue: false
     }
+}, {
+    indexes: [{
+        unique: true,
+        fields: ['accountId', 'label']
+    }]
 })

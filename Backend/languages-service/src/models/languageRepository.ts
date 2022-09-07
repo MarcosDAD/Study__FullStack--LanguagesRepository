@@ -1,26 +1,29 @@
-import accountModel, {ILanguageModel} from './languageModel';
+import languageModel, {ILanguageModel} from './languageModel';
 import {ILanguage} from './language';
 import { DestroyOptions } from 'sequelize/types';
 
 function findAll(accountId: number){
     console.log(`ID: ${accountId}`)
-    return accountModel.findAll<ILanguageModel>({where: {accountId}});
+    return languageModel.findAll<ILanguageModel>({where: {accountId}});
 }
 
-function findById(id : number){
-    return accountModel.findByPk<ILanguageModel>(id);
+function findById(languageId : number, accountId: number){
+    return languageModel.findOne<ILanguageModel>({where: {id: languageId, accountId: accountId}});
 }
 
-function findByLabel(label : string){
-    return accountModel.findOne<ILanguageModel>({where: {label}});
+function findByLabel(label : string, accountId: number){
+    return languageModel.findOne<ILanguageModel>({where: {label, accountId}});
 }
 
-function newAccount(account : ILanguage){
-    return accountModel.create(account);
+async function addLanguage(language : ILanguage, accountId: number){
+    language.accountId = accountId;
+    const result = await languageModel.create(language);
+    language.id = result.id!;
+    return language;
 }
 
-async function setAccount(id: number, account : ILanguage){
-    const originalAccount = await accountModel.findByPk<ILanguageModel>(id);
+async function setLanguage(languageId: number, account : ILanguage, accountId: number){
+    const originalAccount = await languageModel.findOne<ILanguageModel>({where: {id: languageId, accountId}});
     if (originalAccount !== null){
         if (account.label)
             originalAccount.label = account.label;
@@ -34,12 +37,12 @@ async function setAccount(id: number, account : ILanguage){
     return null;
 }
 
-function removeAccount(idAccount : number){
-    return accountModel.destroy({where: {id: idAccount}} as DestroyOptions<ILanguage>);
+async function removeLanguage(languageId : number, accountId: number){
+    return await languageModel.destroy({where: {id: languageId, accountId}} as DestroyOptions<ILanguage>);
 }
 
-function removeAccountByLabel(label : string){
-    return accountModel.destroy({where: {label}} as DestroyOptions<ILanguage>);
+async function removeLanguageByLabel(label : string, accountId: number){
+    return await languageModel.destroy({where: {label, accountId}} as DestroyOptions<ILanguage>);
 }
 
-export default { findAll, findById, findByLabel, newAccount, setAccount, removeAccount, removeAccountByLabel }
+export default { findAll, findById, findByLabel, addLanguage, setLanguage, removeLanguage, removeLanguageByLabel }
