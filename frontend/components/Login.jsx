@@ -2,28 +2,35 @@ import {Button, Form, Container} from 'react-bootstrap';
 import styles from '../styles/Form.module.css'
 import Link from 'next/link';
 import {login, logout} from '../services/auth.js';
-import api from '../services/api.js';
+import AccountsService from '../services/accounts.js';
+
+import { useRouter } from 'next/router';
 
 export default function Login() {
-    const handleSubmit = async (event) => {
-        // Stop the form from submitting and refreshing the page.
-        event.preventDefault()
-    
-        // Get data from the form.
-        const data = {
-          email: event.target.email.value,
-          password: event.target.password.value
-        }
-    
-        const JSONdata = JSON.stringify(data)
+  const router = useRouter();
 
-        const result = await api.post('accounts/login', {
-            email: data.email,
-            password: data.password
-        })
-        
-        login(result.data.token)
+  const handleSubmit = async (event) => {
+      //Pausar o submit do form pra evitar o refresh
+      event.preventDefault()
+  
+      //Data do form
+      const data = {
+        email: event.target.email.value,
+        password: event.target.password.value
       }
+      
+      //Guardando em json pra caso precise
+      const JSONdata = JSON.stringify(data)
+      console.log(data)
+      
+      const services = new AccountsService();
+      const result = await services.login(data.email, data.password);
+      
+      login(result.data.token)
+      console.log(result)
+
+      router.push('/profile')
+    }
 
     return (
       <div className={styles.container}>

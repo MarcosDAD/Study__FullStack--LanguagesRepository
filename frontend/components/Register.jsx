@@ -2,7 +2,7 @@ import {Button, Form, Container} from 'react-bootstrap';
 import styles from '../styles/Form.module.css'
 import Link from 'next/link';
 import { useState } from 'react';
-import api from '../services/api.js';
+import AccountsService from '../services/accounts.js';
 
 export default function Register() {
     const [username, setUsername] = useState({})
@@ -25,19 +25,15 @@ export default function Register() {
           username: event.target.username.value,
           email: event.target.email.value,
           password: event.target.password.value,
+          status: 100,
           nativeLanguage: event.target.nativeLanguage.value
         }
     
         // Send the data to the server in JSON format.
         const JSONdata = JSON.stringify(data)
 
-        const result = await api.post('accounts', {
-            username: data.username,
-            email: data.email,
-            password: data.password,
-            status: 100,
-            native_language: data.nativeLanguage
-        })
+        const services = new AccountsService();
+        const result = await services.signup(data);
         console.log(result)
       }
 

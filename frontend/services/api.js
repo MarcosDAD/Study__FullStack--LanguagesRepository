@@ -1,16 +1,19 @@
 import axios from 'axios';
 import {getToken} from './auth';
 
-const api = axios.create({baseURL: 'http://localhost:3001/'})
+const baseApi = (baseURL) => {
+    const api = axios.create({baseURL: baseURL});
 
-api.interceptors.request.use(async (config) => {
-    const token = getToken();
+    api.interceptors.request.use(async (config) => {
+        const token = getToken();
+    
+        if (token){
+            config.headers['x-access-token'] = token
+        }
+    
+        return config;
+    })
 
-    if (token){
-        config.headers['x-access-token'] = token
-    }
-
-    return config;
-})
-
-export default api;
+    return api;
+}
+export default baseApi;
