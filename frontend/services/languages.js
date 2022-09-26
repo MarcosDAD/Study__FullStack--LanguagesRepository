@@ -11,6 +11,18 @@ class LanguagesService{
 
         return result;
     }
+
+    async add(languageModel) {
+        const result = await this.api.post(`languages`, languageModel);
+
+        return result;
+    }
+
+    async delete(id) {
+        const result = await this.api.delete(`languages/${id}`);
+
+        return result;
+    }
 }
 
 export default LanguagesService;

@@ -6,7 +6,9 @@ function MyApp({ Component, pageProps }) {
   
   return (
     <>
-      <Component {...pageProps} />
+      <RouteGuard>
+        <Component {...pageProps} />
+      </RouteGuard>
     </>
   )
 }

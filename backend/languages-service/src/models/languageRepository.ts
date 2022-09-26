@@ -3,7 +3,6 @@ import {ILanguage} from './language';
 import { DestroyOptions } from 'sequelize/types';
 
 function findAll(accountId: number){
-    console.log(`ID: ${accountId}`)
     return languageModel.findAll<ILanguageModel>({where: {accountId}});
 }
 

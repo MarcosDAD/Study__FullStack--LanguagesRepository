@@ -27,7 +27,6 @@ export default function Login() {
       const result = await services.login(data.email, data.password);
       
       login(result.data.token)
-      console.log(result)
 
       router.push('/profile')
     }

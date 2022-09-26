@@ -1,0 +1,55 @@
+.languages{
+    display: flex;
+    justify-content: space-between;
+    gap: 5rem;
+    width: 36rem;
+}
+
+.languages_content{
+    background-color: #222;
+    border: solid 1px #ddd;
+    min-width: 50%;
+}
+
+.languages table{
+    width: 100%;
+}
+
+.languages_content tr{
+    line-height: 3rem;
+
+}
+
+.languages_content tr:nth-of-type(1){
+    background-color: #323232;
+    border-bottom: solid 1px #ddd;
+    line-height: 3rem;
+}
+
+
+.languages_content th{
+    text-decoration: underline;
+}
+
+.languages_content th{
+    width: 8rem;
+}
+
+.languages_label{
+    width: 70%;
+    padding: 0rem 0.8rem;
+}
+
+.languages_proficiency, .languages_studying, .languages_remove{
+    padding: 0rem 0.5rem;
+}
+
+.languages_studying{
+    vertical-align: middle;
+}
+
+.languages_anchor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

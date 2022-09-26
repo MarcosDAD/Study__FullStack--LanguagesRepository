@@ -78,7 +78,9 @@ async function setLanguage (req: Request, res: Response, next: any){
 
 async function removeLanguage (req: Request, res: Response, next: any){
     try{
+        console.log(`Trying to delete ${req.params.id}`)
         const languageId = parseInt(req.params.id);
+        console.log(`Trying to delete ${languageId}`)
         const languageLabel = req.params.id;
 
         const token = controllerCommons.getToken(res) as Token;

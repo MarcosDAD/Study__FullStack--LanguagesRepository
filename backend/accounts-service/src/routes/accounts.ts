@@ -6,6 +6,8 @@ import Joi from "joi";
 
 router.get('/accounts/', validateAuthentication,accountsController.getAccounts);
 
+router.get('/accounts/user', validateAuthentication, accountsController.getOwnAccount);
+
 router.get('/accounts/:id', validateAuthentication, validateAutorization, accountsController.getAccount);
 
 router.patch('/accounts/:id', validateAuthentication, validateAutorization, validateUpdateAccount, accountsController.setAccount);

@@ -6,11 +6,17 @@ import controllerCommons from 'lo-commons/api/controllers/controller';
 import {Token} from 'lo-commons/api/auth';
 
 async function getAccounts (req: Request, res: Response, next: any){
+    console.log('boa')
     const accounts : IAccount[] = await repository.findAll();
     res.json(accounts.map(item => {
         item.password = "";
         return item;
     }));
+}
+
+async function getOwnAccount (req: Request, res: Response, next: any){
+    console.log('oi')
+    res.status(200).end();
 }
 
 async function getAccount (req: Request, res: Response, next: any){
@@ -120,4 +126,4 @@ async function removeAccount (req: Request, res: Response, next: any){
     }
 }
 
-export default {getAccounts, getAccount, addAccounts, setAccount, loginAccount, logoutAccount, removeAccount}
+export default {getAccounts, getAccount, addAccounts, setAccount, loginAccount, logoutAccount, removeAccount, getOwnAccount}

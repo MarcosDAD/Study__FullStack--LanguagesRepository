@@ -26,7 +26,7 @@ export default function Register() {
           email: event.target.email.value,
           password: event.target.password.value,
           status: 100,
-          nativeLanguage: event.target.nativeLanguage.value
+          native_language: event.target.nativeLanguage.value
         }
     
         // Send the data to the server in JSON format.

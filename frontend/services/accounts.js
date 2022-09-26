@@ -6,7 +6,14 @@ class AccountsService{
         this.api = baseAPI(baseURLs.API_ACCOUNTS)
     }
 
+    async account(id) {
+        const result = await this.api.get(`account`);
+
+        return result;
+    }
+
     async signup(userModel) {
+        console.log(userModel)
         const result = await this.api.post('accounts', userModel);
 
         return result;

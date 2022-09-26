@@ -29,7 +29,7 @@ function RouteGuard({ children }) {
 
     function authCheck(url) {
         // redireciona pro Login se não autorizado
-        const publicPaths = ['/','/login'];
+        const publicPaths = ['/','/login','/login/register'];
         const path = url.split('?')[0];
         if (!isAuthenticated() && !publicPaths.includes(path)) {
             setAuthorized(false);
